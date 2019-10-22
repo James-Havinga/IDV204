@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+        <link href="https://fonts.googleapis.com/css?family=Rubik:400,500,700,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.0/css/all.css">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="css/custom.css">
+        {% endblock %}
+    </head>
+    <body>
+        <div class="w-screen min-h-screen bg-white">
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <!-- Navbar container -->                
+                <div class="bg-white shadow">
+                    <div class="container mx-auto px-4">
+        
+                        <div class="flex items-center justify-between py-4">
+                            <a href="{{ path('index.question') }}">
+                                <img src="{{ asset('./images/askio.png') }}" alt="">
+                            </a>
+                    
+                            <div class="w-9/12 hidden sm:flex sm:items-center">
+                                <a href="" class="text-gray-800 text-sm font-semibold hover:text-askio-blue mr-4">Feed</a>
+                                <a href="#" class="text-gray-800 text-sm font-semibold hover:text-askio-blue mr-4">Browse</a>
+                                <a href="#" class="text-gray-800 text-sm font-semibold hover:text-askio-blue mr-4">Tags</a>
+                                <input class="text-sm appearance-none border rounded-full w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-askio-blue" name="search" type="text" placeholder="Search...">
+                            </div>
+                    
+                            <div class="hidden sm:flex sm:items-center">
+                                <i class="mr-5 text-xl hover:text-askio-blue hover:pointer fal fa-comments-alt"></i>
+                                <button class="grow-small askio-blue mr-5 text-sm text-white py-2 px-4 rounded-full hover:shadow-lg focus:outline-none focus:shadow-outline" type="button">
+                                    Upload 
+                                </button>
+                                <img class="mx-auto w-10 h-10 rounded-full" src="./images/">
+                            </div>
+                    
+                            <div class="sm:hidden cursor-pointer">
+                                <i class="text-gray-800 text-xl text-askio-blue font far fa-bars"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="block sm:hidden bg-white border-t-2 py-2">
+                            <div class="flex flex-col">
+                                <a href="#" class="text-gray-800 text-sm font-semibold hover:text-askio-blue mr-4">Feed</a>
+                                <a href="#" class="text-gray-800 text-sm font-semibold hover:text-askio-blue mr-4">Browse</a>
+                                <a href="#" class="text-gray-800 text-sm font-semibold hover:text-askio-blue mr-4">Tags</a>
+                                <div class="flex justify-between items-center border-t-2 pt-2">
+                                    <a href="#" class="text-gray-800 text-sm font-semibold hover:text-purple-600 mr-4">Sign in</a>
+                                    <a href="#" class="text-gray-800 text-sm font-semibold border px-4 py-1 rounded-lg hover:text-purple-600 hover:border-purple-600">Sign up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% block body %}{% endblock %}
+        </div>
+        
+        {% block javascripts %}
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        {% endblock %}
+    </body>
+</html>

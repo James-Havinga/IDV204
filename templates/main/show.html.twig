@@ -1,0 +1,154 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <!-- Single Post Container-->
+    <div class="mx-auto container flex">
+
+        <!--Left side-->
+        <div class="w-8/12 min-h-full flex flex-col p-4 mt-10">
+            <img src="{{ '/images/' ~ question.image }}" class="object-none  overflow-hidden rounded-lg">
+
+            <!--Content Section-->
+            <div class="flex flex-col px-24 pb-10">
+                <h1 class="mt-10 font-bold tracking-wide text-xl text-gray-900">{{ question.title }}</h1>
+                <p class="text-sm mt-8">{{ question.body }}</p>
+
+                <!--TODO: Add timestamps on questions-->
+                <p class="font-light text-xs leading-none mt-5 text-gray-600">Published on March 26th, 2018, at 1:56pm</p>
+
+                <!-- Divider Line-->
+                <div class="w-full skinny bg-askio-gray mt-8"></div>
+
+                <!-- Post Buttons Container -->
+                <div class="flex mt-8">
+                    <a href="{{ path('index.like', {id: question.id}) }}"  class="like-article grow w-10 h-10 rounded-full bg-askio-gray flex justify-center items-center">
+                        <i class="fal fa-thumbs-up"></i>
+                    </a>
+
+                    <a href="#" class="grow ml-2 w-10 h-10 rounded-full bg-askio-gray flex justify-center items-center">
+                        <i class="fal fa-thumbs-down"></i>
+                    </a>
+
+                    
+                    <button class="grow-small ml-6 bg-askio-blue text-sm text-white py-2 px-4 rounded-full hover:shadow-lg focus:outline-none focus:shadow-outline" type="button">
+                        Ask Something Else 
+                    </button>
+
+                </div>
+            </div><!--End of content-->
+        </div>
+
+
+        <!-- Right Side-->
+        <div class="w-4/12 min-h-full borderLeft borderRight">
+
+            <!-- Author Container -->
+            <div class="p-8 flex-col items-center justify-between cursor-pointer borderBot">
+
+                <!-- Single Question -->
+                <div class="flex items-center bg-white ">
+                    <img class="mr-3 w-12 h-12 rounded-full" src="{{ '/images/' ~ question.author.image }}">   
+                    <div class="ml-6">
+                        <h1 class="font-bold tracking-wide leading-none text-md text-gray-900">{{ question.author.name }}</h1>
+                        <p class="font-light text-xs leading-none mt-2 text-gray-600">Asked 3 Hours ago</p>
+                    </div>    
+                </div>
+
+                <!-- Like Button-->
+                <div class="flex">
+                    <div class="w-1/2 flex justify-between">
+                        <i class="mt-5 text-xl font-bold far fa-thumbs-up"></i>
+                        <i class="mt-5 text-xl font-bold far fa-star"></i>
+                        <i class="mt-5 text-xl font-bold far fa-bell"></i>
+                        <i class="mt-5 text-xl font-bold far fa-info-circle"></i>
+                    </div>
+
+                    <div class="w-1/2 text-center">
+                        <span class="ml-6 mt-6 font-light text-xs leading-none mt-2 text-gray-600 flex">
+                            <p id="likes-count">{{likes}}</p> 
+                            <p class="ml-1">likes</p>
+                        </span>                            
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Container -->
+            <div class="bg-gray-100 p-4">
+
+                {% for coms in comments %}
+                    <div class="flex items-center">
+                        <img class="mr-3 w-8 h-8 rounded-full" src="{{ '/images/' ~ coms.user.image }}">   
+                        <div class="ml-2">
+                            <h1 class="text-sm">
+                                <b class="font-bold tracking-wide text-gray-900 leading-none">{{ coms.user.name }}</b>
+                                {{ coms.comment }}
+                            </h1>
+                        </div>   
+                    </div>
+
+                    <!-- Reply to a comment -->
+                    <div class="flex-col pl-10">
+                       <div class="flex">
+                            <a href="#" class="ml-3 font-light text-xs leading-none mt-2 text-gray-600">Like</a>
+                            <a href="#" data-comment="{{coms.id}}" class="reply-btn ml-4 font-light text-xs leading-none mt-2 text-gray-600">Reply</a>
+                       </div>
+
+                       <!-- Reply Form -->
+                       <div data-reply-{{coms.id}} class="hidden mt-4">
+                            <form action="{{ path('index.reply', {id: coms.id}) }}">
+                                <div class="flex">
+                                    <input class="form-control text-sm appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-askio-blue" type="text" name="reply">
+                                    <input type="hidden" name="questionId" value={{ question.id }}>
+                                    <button class="form-sub py-2 px-3 grow-small ml-2 bg-askio-blue text-sm text-white rounded-full hover:shadow-lg focus:outline-none focus:shadow-outline" type="submit" name="submit"><i class="fal fa-paper-plane"></i></button>
+                                </div>
+                            </form>
+                       </div>
+
+                       {# Reply container #}
+                        <div class="ml-2 mb-5 mt-3">
+
+                            {# Each reply container #}
+                            {% for reply in replies %}
+                                {% if reply.com.id == coms.id %}
+                                    <div class="mt-4 flex items-center">
+                                        <img class="mr-3 w-8 h-8 rounded-full" src="{{ '/images/' ~ reply.user.image }}">   
+                                        <div class="ml-2">
+                                            <h1 class="text-sm">
+                                                <b class="font-bold tracking-wide text-gray-900 leading-none">{{ reply.user.name }}</b>
+                                                {{ reply.reply }}
+                                            </h1>
+                                        </div>   
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+            <!-- Your Comment Container -->
+            <div class="px-4 py-6 flex-col items-center justify-between cursor-pointer borderTop">
+
+                <div class="flex">
+                    <img class="mr-3 w-8 h-8 rounded-full" src="{{ '/images/' ~ user.image }}">   
+                    
+                    <div class="ml-2 w-full">
+                        {{ form_start(form) }}
+                            {{ form_widget(form.comment) }}
+                        {{ form_end(form) }}
+                    </div>   
+                </div>
+                
+            </div>
+
+
+        </div><!--End of Right-->
+
+    </div>
+{% endblock body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/toggleReply.js') }}"></script>
+    <script src="{{ asset('js/likeArticle.js') }}"></script>
+{% endblock javascripts %}

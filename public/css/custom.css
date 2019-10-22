@@ -1,0 +1,9 @@
+.grow { transition: all .2s ease-in-out; }
+.grow:hover { transform: scale(1.1); }
+
+.grow-small { transition: all .2s ease-in-out; }
+.grow-small:hover { transform: scale(1.02); }
+
+.askio-blue {
+    background-color: #6C63FF;
+}
